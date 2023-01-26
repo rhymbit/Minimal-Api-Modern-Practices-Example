@@ -18,9 +18,12 @@
 ### Features: -
 
 - Uses **MinimalApis** to create the endpoints.
-- Uses **FluentValidation** to validate the request.
+- Uses **MinimalApi Filters** to handle processing incoming requests before they make it to the endpoints
+  - Uses **FluentValidation** to validate the request.
 - Uses **Mediator** not **MediaTr** to handle the request.  
   _(Note: - **Mediator** is much faster than **MediaTr**)_
-- Uses api versioning.
-- Contains an example of using background services where the background service uses the scoped database service.
+- Uses **Api Versioning**.
+- Contains: -
+  - Example of Implementing a **Middleware** in minimal apis.
+  - Example of using **Background Services** where the background service uses the scoped database service.
 - Uses **Serilog** for logging.

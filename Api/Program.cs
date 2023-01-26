@@ -1,4 +1,6 @@
 using Api.v1.Endpoints;
+using Api.v1.FiltersAndValidators.Validators;
+using Api.v1.Models.UserModels;
 using Api.v1.Services;
 using Asp.Versioning;
 
@@ -7,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 using var db = new MyDbContext();
 db.Database.EnsureCreated();
 
-// Add services to the container.
+// ********** Add services to the container. ***************
+
 builder.Services.AddDbContext<MyDbContext>(options =>
 {
     options.UseSqlite($"Data Source={Path.Join(Environment.CurrentDirectory, "database.db")}");
@@ -26,14 +29,20 @@ builder.Services.AddApiVersioning(options =>
     );
 });
 
+// Fluent Validators
+builder.Services.AddScoped<IValidator<AddUserRequestModel>, AddUserValidator>();
+builder.Services.AddScoped<IValidator<PutUserRequestModel>, PutUserValidator>();
+
+// Mediator
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
+// Custom Services
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserCountingService>();
 
 builder.Services.AddCors();
 
-
+// *********** WebApplication app ***************
 var app = builder.Build();
 var apiGroup = app.NewVersionedApi().MapGroup("/api");
 

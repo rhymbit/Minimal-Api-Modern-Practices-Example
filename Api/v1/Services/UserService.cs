@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Api.v1.Services;
+﻿namespace Api.v1.Services;
 
 public class UserService
 {
