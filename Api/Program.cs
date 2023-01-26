@@ -1,17 +1,16 @@
 using Api.v1.Endpoints;
+using Api.v1.Services;
 using Asp.Versioning;
-using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var db = new Database.DbContext();
-db.Database.Migrate();
+using var db = new MyDbContext();
+db.Database.EnsureCreated();
 
 // Add services to the container.
-builder.Services.AddDbContext<Database.DbContext>(options =>
+builder.Services.AddDbContext<MyDbContext>(options =>
 {
-    var connStringBuilder = new SqliteConnectionStringBuilder(Environment.CurrentDirectory);
-    options.UseSqlite(connStringBuilder.ConnectionString);
+    options.UseSqlite($"Data Source={Path.Join(Environment.CurrentDirectory, "database.db")}");
 });
 
 builder.Services.AddApiVersioning(options =>
@@ -20,12 +19,18 @@ builder.Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new ApiVersion(1, 0);
     options.ReportApiVersions = true;
     options.ApiVersionReader = ApiVersionReader.Combine(
-        new UrlSegmentApiVersionReader(), // localhost:5201/api/v1/users
-        new QueryStringApiVersionReader("api-version"), // localhost:5201/api/users?api-version=1.0
-        new HeaderApiVersionReader("X-Version"), // X-Version = 1.0 (in request Header)
-        new MediaTypeApiVersionReader("ver") // Content-Type = application/json;ver=1.0 (in request Header)
+        new UrlSegmentApiVersionReader(), // api/v1/users
+        new QueryStringApiVersionReader("api-version"), // api/users?api-version=1.0
+        new HeaderApiVersionReader("X-Version"), // X-Version=1.0 (in request Header)
+        new MediaTypeApiVersionReader("ver") // Content-Type=application/json;ver=1.0 (in request Header)
     );
 });
+
+builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
+
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserCountingService>();
+
 builder.Services.AddCors();
 
 
@@ -42,9 +47,8 @@ app.UseCors(options =>
 });
 
 apiGroup
-    .MapGroup("/v{version:apiVersion}/Users")
-    .MapUserEndpoints()
+    .MapGroup("/v{version:apiVersion}/users")
+    .MapUserEndpointsV1()
     .HasApiVersion(new ApiVersion(1, 0));
-
 
 app.Run();

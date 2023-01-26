@@ -2,9 +2,9 @@
 
 public class User
 {
-    public string Id;
-    public string Name;
-    public UInt16 Age;
-    public string Email;
-    public string Password;
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public UInt16 Age { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }

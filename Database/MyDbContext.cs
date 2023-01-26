@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Database;
 
-public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+public class MyDbContext : DbContext
 {
-    public DbSet<User> Users { get; }
+    public DbSet<User> Users { get; set; }
 
     public string DbPath { get; }
 
-    public DbContext() =>
+    public MyDbContext() =>
         DbPath = Path.Combine(Environment.CurrentDirectory, "database.db");
 
-    public DbContext(DbContextOptions<DbContext> options) :
+    public MyDbContext(DbContextOptions<MyDbContext> options) :
         base(options) =>
         DbPath = Path.Combine(Environment.CurrentDirectory, "database.db");
 
