@@ -1,3 +1,4 @@
+using Api.v1.BackgroundTasks.UserBgTasks;
 using Api.v1.Endpoints;
 using Api.v1.FiltersAndValidators.Validators;
 using Api.v1.Middlewares;
@@ -37,9 +38,12 @@ builder.Services.AddScoped<IValidator<PutUserRequestModel>, PutUserValidator>();
 // Mediator
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
-// Custom Services
+// User Services
 builder.Services.AddScoped<UserService>();
+
+// Background Tasks
 builder.Services.AddScoped<UserCountingService>();
+builder.Services.AddHostedService<UserCountingServiceHostedService>();
 
 builder.Services.AddCors();
 

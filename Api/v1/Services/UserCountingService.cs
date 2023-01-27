@@ -8,7 +8,7 @@ public class UserCountingService
         _db = db;
     }
 
-    public async Task CountUsers(CancellationToken ctoken)
+    public async Task DoWork(CancellationToken ctoken)
     {
         while (!ctoken.IsCancellationRequested)
         {
