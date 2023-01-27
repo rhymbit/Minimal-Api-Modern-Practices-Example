@@ -1,5 +1,6 @@
 using Api.v1.Endpoints;
 using Api.v1.FiltersAndValidators.Validators;
+using Api.v1.Middlewares;
 using Api.v1.Models.UserModels;
 using Api.v1.Services;
 using Asp.Versioning;
@@ -55,9 +56,12 @@ app.UseCors(options =>
     options.AllowAnyOrigin();
 });
 
+app.UseRequestOperationCancelled();
+
 apiGroup
     .MapGroup("/v{version:apiVersion}/users")
     .MapUserEndpointsV1()
     .HasApiVersion(new ApiVersion(1, 0));
+
 
 app.Run();

@@ -10,6 +10,7 @@ public static class UserEndpoints
     public static RouteGroupBuilder MapUserEndpointsV1(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetAllUsers).WithName("GetAllUsers");
+        group.MapGet("/delayed", GetAllUsersDelayed).WithName("GetAllUsersSlow");
         group.MapGet("/{id}", GetUser).WithName("GetUserById");
         group.MapPost("/", AddUser)
             .AddEndpointFilter<AddUserFilter>()
@@ -27,6 +28,14 @@ public static class UserEndpoints
     {
         var query = new GetAllUsersQuery();
         var result = await _mediator.Send(query, ctoken);
+        return result != null ? Results.Ok(result) : Results.Ok(new());
+    }
+
+    public static async Task<IResult> GetAllUsersDelayed(IMediator _mediator, CancellationToken ctoken)
+    {
+        var query = new GetAllUsersQuery();
+        var result = await _mediator.Send(query, ctoken);
+        await Task.Delay(5_000, ctoken); // creating 5 seconds of delay
         return result != null ? Results.Ok(result) : Results.Ok(new());
     }
 
