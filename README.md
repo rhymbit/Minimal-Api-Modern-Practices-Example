@@ -27,3 +27,7 @@
   - Example of Implementing a **Middleware** in minimal apis.
   - Example of using **Background Services** where the background service uses the scoped database service.
 - Uses **Serilog** for logging.
+
+### Jwt Authentication
+
+- Checkout to `Jwt` branch to learn about how to implement **Jwt Authentication** in **MinimalApis**.
