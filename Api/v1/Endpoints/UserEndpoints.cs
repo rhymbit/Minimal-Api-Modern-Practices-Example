@@ -1,5 +1,6 @@
 ﻿using Api.v1.FiltersAndValidators.UserFilters;
 using Api.v1.Models.UserModels;
+using Api.v1.RequestMediator.Queries.User;
 using Api.v1.RequestsMediator.Commands.User;
 using Api.v1.RequestsMediator.Queries.User;
 
@@ -9,19 +10,40 @@ public static class UserEndpoints
 {
     public static RouteGroupBuilder MapUserEndpointsV1(this RouteGroupBuilder group)
     {
-        group.MapGet("/", GetAllUsers).WithName("GetAllUsers");
-        group.MapGet("/delayed", GetAllUsersDelayed).WithName("GetAllUsersSlow");
-        group.MapGet("/{id}", GetUser).WithName("GetUserById");
-        group.MapPost("/", AddUser)
+        group.MapGet("/token", GetJwtToken)
+            .WithName("GetJwtToken");
+        group
+            .MapGet("/", GetAllUsers)
+            .WithName("GetAllUsers");
+        group
+            .MapGet("/delayed", GetAllUsersDelayed)
+            .WithName("GetAllUsersDelayed");
+        group
+            .MapGet("/{id}", GetUser)
+            .WithName("GetUserById");
+        group
+            .MapPost("/", AddUser)
             .AddEndpointFilter<AddUserFilter>()
             .WithName("AddUser");
-        group.MapPut("/", PutUser)
+        group
+            .MapPut("/", PutUser)
             .AddEndpointFilter<PutUserFilter>()
             .WithName("PutUser");
-        group.MapDelete("/{id}", DeleteUser).WithName("DeleteUserById");
-        group.MapDelete("/", DeleteAllUsers).WithName("DeleteAllUsers");
+        group
+            .MapDelete("/{id}", DeleteUser)
+            .WithName("DeleteUserById");
+        group
+            .MapDelete("/", DeleteAllUsers)
+            .WithName("DeleteAllUsers");
 
         return group;
+    }
+
+    public static async Task<IResult> GetJwtToken(IMediator _mediator, CancellationToken ctoken, string username)
+    {
+        var query = new GetJwtTokenQuery(username);
+        var result = await _mediator.Send(query, ctoken);
+        return Results.Ok(result);
     }
 
     public static async Task<IResult> GetAllUsers(IMediator _mediator, CancellationToken ctoken)

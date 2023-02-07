@@ -3,3 +3,7 @@ global using Database.Models;
 global using Microsoft.EntityFrameworkCore;
 global using Mediator;
 global using FluentValidation;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Asp.Versioning;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Text;
