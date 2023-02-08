@@ -1,4 +1,5 @@
-﻿using Api.v1.FiltersAndValidators.UserFilters;
+﻿using Api.v1.FiltersAndValidators.ApiKeyFilters;
+using Api.v1.FiltersAndValidators.UserFilters;
 using Api.v1.Models.UserModels;
 using Api.v1.RequestsMediator.Commands.User;
 using Api.v1.RequestsMediator.Queries.User;
@@ -9,6 +10,9 @@ public static class UserEndpoints
 {
     public static RouteGroupBuilder MapUserEndpointsV1(this RouteGroupBuilder group)
     {
+        group.MapGet("/api-key", GetAllUsersWithApiKey)
+            .AddEndpointFilter<UserApiKeyFilter>()
+            .WithName("GetAllUsersWithApiKey");
         group.MapGet("/", GetAllUsers).WithName("GetAllUsers");
         group.MapGet("/delayed", GetAllUsersDelayed).WithName("GetUsersDelayed");
         group.MapGet("/{id}", GetUser).WithName("GetUserById");
@@ -22,6 +26,13 @@ public static class UserEndpoints
         group.MapDelete("/", DeleteAllUsers).WithName("DeleteAllUsers");
 
         return group;
+    }
+
+    public static async Task<IResult> GetAllUsersWithApiKey(IMediator _mediator, CancellationToken ctoken)
+    {
+        var query = new GetAllUsersQuery();
+        var result = await _mediator.Send(query, ctoken);
+        return result != null ? Results.Ok(result) : Results.Ok(new());
     }
 
     public static async Task<IResult> GetAllUsers(IMediator _mediator, CancellationToken ctoken)

@@ -2,6 +2,7 @@ using Api.v1.BackgroundTasks.UserBgTasks;
 using Api.v1.Endpoints;
 using Api.v1.FiltersAndValidators.Validators;
 using Api.v1.Middlewares;
+using Api.v1.Models.ApiKeys;
 using Api.v1.Models.UserModels;
 using Api.v1.Services;
 using Asp.Versioning;
@@ -34,6 +35,7 @@ builder.Services.AddApiVersioning(options =>
 // Fluent Validators
 builder.Services.AddScoped<IValidator<AddUserRequestModel>, AddUserValidator>();
 builder.Services.AddScoped<IValidator<PutUserRequestModel>, PutUserValidator>();
+builder.Services.AddScoped<IValidator<UserApiKeyModel>, UserApiKeyValidator>();
 
 // Mediator
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
@@ -62,8 +64,7 @@ app.UseCors(options =>
 
 app.UseRequestOperationCancelled();
 
-app
-    .MapAllEndpointsInformation();
+app.MapAllEndpointsInformation();
 
 apiGroup
     .MapGroup("/v{version:apiVersion}/users")

@@ -6,7 +6,7 @@ public static class AllEndpointsInformation
     {
         app.MapGet("/", AllEndpoints)
             .WithName("AllEndpoints");
-
+    
         return app;
     }
 
@@ -14,6 +14,7 @@ public static class AllEndpointsInformation
     {
         var endpoints = new Dictionary<string, string>
         {
+            { "GET: GetAllUsers", "api/v1/users/api-key" },
             { "GET: GetAllUsers", "api/v1/users" },
             { "GET: GetAllUsersDelayed", "api/v1/users/delayed" },
             { "GET: GetUserById", "api/v1/users/{id}" },
