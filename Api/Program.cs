@@ -62,6 +62,9 @@ app.UseCors(options =>
 
 app.UseRequestOperationCancelled();
 
+app
+    .MapAllEndpointsInformation();
+
 apiGroup
     .MapGroup("/v{version:apiVersion}/users")
     .MapUserEndpointsV1()

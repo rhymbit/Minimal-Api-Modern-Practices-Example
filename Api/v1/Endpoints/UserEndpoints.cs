@@ -10,7 +10,7 @@ public static class UserEndpoints
     public static RouteGroupBuilder MapUserEndpointsV1(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetAllUsers).WithName("GetAllUsers");
-        group.MapGet("/delayed", GetAllUsersDelayed).WithName("GetAllUsersSlow");
+        group.MapGet("/delayed", GetAllUsersDelayed).WithName("GetUsersDelayed");
         group.MapGet("/{id}", GetUser).WithName("GetUserById");
         group.MapPost("/", AddUser)
             .AddEndpointFilter<AddUserFilter>()

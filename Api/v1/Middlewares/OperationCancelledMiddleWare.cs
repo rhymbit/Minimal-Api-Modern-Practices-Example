@@ -14,7 +14,7 @@ public class OperationCancelledMiddleWare
         {
             await _next(context);
         }
-        catch (Exception)
+        catch (TaskCanceledException)
         {
             _logger.LogInformation("Request was cancelled by user");
         }
