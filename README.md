@@ -34,5 +34,5 @@
 
 ### Api Keys Authentication
 
-- Checkout to `Api-Keys` branch to learn about how to implement **Api Keys Authentication** in **MinimalApis**.  
+- Checkout to `Api-Key` branch to learn about how to implement **Api Keys Authentication** in **MinimalApis**.  
   _(It basically just uses filters 🤷🏻‍♂️)_
