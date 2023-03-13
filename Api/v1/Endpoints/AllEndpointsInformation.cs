@@ -14,7 +14,7 @@ public static class AllEndpointsInformation
     {
         var endpoints = new Dictionary<string, string>
         {
-            { "GET: GetJwtTokenWithoutAuth", "api/v1/token" },
+            { "GET: GetJwtTokenWithoutAuth", "api/v1/token?username=[some-username]" },
             { "GET: GetJwtToken", "api/v1/users/token" },
             { "GET: GetAllUsers", "api/v1/users" },
             { "GET: GetAllUsersDelayed", "api/v1/users/delayed" },
